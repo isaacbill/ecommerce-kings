@@ -5,10 +5,8 @@
         INSERT INTO users (firstname,lastname,email,phonenumber, password) VALUES (#{firstname},#{lastname},
          #{email},#{phonenumber}, #{password})
     </insert>
-    <select id="findByEmail" parameterType="string" resultType="com.isaac.model.Users">
-        SELECT * FROM users WHERE email = #{email}
-    </select>
-    <select id="findByPassword" parameterType="string" resultType="com.isaac.model.Users">
-        SELECT * FROM users WHERE password = #{password}
+    <select id="loginUser" parameterType="java.util.Map" resultType="com.isaac.model.Users">
+        SELECT * FROM users
+        WHERE email = #{email} AND password = #{password}
     </select>
 </mapper>

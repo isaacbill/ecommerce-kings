@@ -1,6 +1,8 @@
 package com.isaac.controller;
 
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,4 +31,19 @@ private UserService userService;
 		                .body("Registration failed: " + e.getMessage());
 		        }
 		    }
-		}
+ @PostMapping("/login")
+ public ResponseEntity<String> login(@RequestBody Map<String, String> loginData) {
+     String email = loginData.get("email");
+     String password = loginData.get("password");
+
+     Users users = userService.loginUser(email, password);
+
+     if (users != null) {
+         return ResponseEntity.ok("Login successful!"); // Return success message
+     } else {
+         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+             .body("Invalid email or password"); // Return error message
+     }
+ }
+ 
+}

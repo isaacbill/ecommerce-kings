@@ -1,6 +1,10 @@
 package com.isaac.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import com.isaac.config.MyBatisConfig;
@@ -19,17 +23,17 @@ public class UserService {
         }
     
     } 
+    public Users loginUser(String email, String password) {
+        SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession();
+        try {
+            Map<String, String> credentials = new HashMap<>();
+            credentials.put("email", email);
+            credentials.put("password", password);
 
-//    public Users findByUsername(String username) {
-//        try (SqlSession session = sqlSessionFactory.openSession()) {
-//            return session.selectOne("com.isaac.mapper.UserMapper.findByUsername", username);
-//        }
-//    }
-//
-//    public Users findByEmail(String email) {
-//        try (SqlSession session = sqlSessionFactory.openSession()) {
-//            return session.selectOne("com.isaac.mapper.UserMapper.findByEmail", email);
-//        }
-//    }
-
+            // Execute the SQL query directly
+            return (Users) session.selectOne("com.isaac.mapper.UserMapper.loginUser", credentials);
+        } finally {
+            session.close();
+        }
+    }
 }
