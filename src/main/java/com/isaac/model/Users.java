@@ -1,4 +1,7 @@
 package com.isaac.model;
+
+import java.time.LocalDateTime;
+
 public class Users {
 	
 	private long id;
@@ -7,7 +10,22 @@ public class Users {
 	private String email;
 	private long phonenumber;
 	private String password;
+	private String passwordResetToken;
+    private LocalDateTime passwordResetTokenExpiration;
+    
 	
+	public Users(long id, String firstname, String lastname, String email, long phonenumber, String password,
+			String passwordResetToken, LocalDateTime passwordResetTokenExpiration) {
+		super();
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.phonenumber = phonenumber;
+		this.password = password;
+		this.passwordResetToken = passwordResetToken;
+		this.passwordResetTokenExpiration = passwordResetTokenExpiration;
+	}
 	public long getId() {
 		return id;
 	}
@@ -44,6 +62,25 @@ public class Users {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getPasswordResetToken() {
+		return passwordResetToken;
+	}
+	public void setPasswordResetToken(String passwordResetToken) {
+		this.passwordResetToken = passwordResetToken;
+	}
+	public LocalDateTime getPasswordResetTokenExpiration() {
+		return passwordResetTokenExpiration;
+	}
+	public void setPasswordResetTokenExpiration(LocalDateTime passwordResetTokenExpiration) {
+		this.passwordResetTokenExpiration = passwordResetTokenExpiration;
+	}
+	@Override
+	public String toString() {
+		return "Users [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email
+				+ ", phonenumber=" + phonenumber + ", password=" + password + ", passwordResetToken="
+				+ passwordResetToken + ", passwordResetTokenExpiration=" + passwordResetTokenExpiration + "]";
+	}
+	
 	
 
 }

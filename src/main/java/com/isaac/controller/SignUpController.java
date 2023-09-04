@@ -1,7 +1,9 @@
 package com.isaac.controller;
 
 
+import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.isaac.model.Users;
 import com.isaac.service.UserService;
 
@@ -46,4 +50,48 @@ private UserService userService;
      }
  }
  
+// @PostMapping("/reset")
+// public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetData) {
+//     String email = resetData.get("email");
+//     String token = resetData.get("token");
+//     String newPassword = resetData.get("newPassword");
+//
+//     if (userService.isPasswordResetTokenValid(email, token)) {
+//         userService.resetPassword(email, newPassword);
+//         userService.invalidatePasswordResetToken(email);
+//         return ResponseEntity.ok("Password reset successfully.");
+//     } else {
+//         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//             .body("Invalid or expired token.");
+//     }
+// }
+ @PostMapping("/generate-token")
+ public ResponseEntity<String> generatePasswordResetToken(@RequestParam(required = true) String email) {
+     String token = UUID.randomUUID().toString();
+     LocalDateTime expiration = LocalDateTime.now().plusHours(1);
+     userService.generatePasswordResetToken(email, token, expiration);
+
+     // Send an email to the user with the reset token link
+     // This step is typically handled by an email service
+
+     return ResponseEntity.ok("Reset token generated and sent to your email.");
+ }
+
+ @PostMapping("/reset")
+ public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> resetData) {
+     String email = resetData.get("email");
+     String token = resetData.get("token");
+     String newPassword = resetData.get("newPassword");
+
+     if (userService.isPasswordResetTokenValid(email, token)) {
+         userService.resetPassword(email, newPassword);
+         userService.invalidatePasswordResetToken(email);
+         return ResponseEntity.ok("Password reset successfully.");
+     } else {
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+             .body("Invalid or expired token.");
+     }
+ }
+
+
 }

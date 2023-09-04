@@ -5,12 +5,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <configuration>
 <typeAliases>
 <typeAlias type="com.isaac.model.Users" alias="users"/>
+<typeAlias type="com.isaac.model.Category" alias="category"/>
+<typeAlias type="com.isaac.model.Products" alias="products"/>
 </typeAliases>
 <environments default="development">
 <environment id="development">
 <transactionManager type="JDBC"/>
 <dataSource type="POOLED">
-<property name="driver" value="com.mysql.jdbc.Driver"/>
+<property name="driver" value="com.mysql.cj.jdbc.Driver"/>
 <property name="url" value="jdbc:mysql://localhost:3306/kingsbrand?useSSL=false"/>
 <property name="username" value="root"/>
 <property name="password" value="Isaacokeyo@12"/>
@@ -19,5 +21,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 </environments>
 <mappers>
 <mapper resource="com/isaac/mapper/UserMapper.xml" />
+<mapper resource="com/isaac/mapper/CategoryMapper.xml" />
+<mapper resource="com/isaac/mapper/ProductMapper.xml" />
 </mappers>
 </configuration>

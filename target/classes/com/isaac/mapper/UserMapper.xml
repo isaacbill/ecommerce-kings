@@ -9,4 +9,34 @@
         SELECT * FROM users
         WHERE email = #{email} AND password = #{password}
     </select>
+    <!-- Insert the password reset token and expiration -->
+    <update id="insertPasswordResetToken">
+        UPDATE users
+        SET password_reset_token = #{token}, password_reset_token_expiration = #{expiration}
+        WHERE email = #{email}
+    </update>
+
+    <!-- Check if the password reset token is valid -->
+    <select id="checkPasswordResetToken" resultType="int">
+        SELECT COUNT(*)
+        FROM users
+        WHERE email = #{email}
+          AND password_reset_token = #{token}
+          AND password_reset_token_expiration > NOW()
+    </select>
+
+    <!-- Update the user's password -->
+    <update id="updatePassword">
+        UPDATE users
+        SET password = #{password}
+        WHERE email = #{email}
+    </update>
+
+    <!-- Invalidate the password reset token -->
+    <update id="invalidatePasswordResetToken">
+        UPDATE users
+        SET password_reset_token = NULL, password_reset_token_expiration = NULL
+        WHERE email = #{email}
+    </update>
+    
 </mapper>
